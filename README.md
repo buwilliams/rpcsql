@@ -12,23 +12,26 @@ Experimenting with remote procedure calls for SQL in Rails.
 
 ## Context
 
-Much of our work is building mini-SPAs (single-page apps.) When building a
-a mini-SPA often you want to get JSON in a certain structure. Available APIs
-are cumbersome, largely getting in the way. I believe this is because most
-people are designing API technology with outsiders in mind. If however, you
-are consuming your own front-end (as most of us are) then this approach is
-slow. If you make changes, you make changes on both sides of the app, the
-front-end and backend.
+Much of our work is in building screens which support our business. In our shop
+we use a `mini-SPA` pattern. Instead of a SPA for the entire product we build
+little apps for sections of our product. These little apps use UI frameworks
+such as Vue.js. Often when requesting data from the backend you want the JSON
+in a certain structure. This is because you don't want to organize the data once
+you get it. Available API solutions are cumbersome, largely getting in the way.
+I believe this is because most people are designing API technology with external
+callers in mind. If however, you are consuming your own backend (as most of us
+are) then the accepted approach is unnecessarily slow requiring you to write
+serializers and accepting new parameters. SQL already does this in a nice way.
 
 Here's an example of mini-SPA:
-- Browser makes request to load "mini-SPA"
+- Browser makes request to load "mini-SPA" view
 - Vue.js and HTML template coded in a standard Rails view
-- The mini-SPA calls JSON API to load initial data
-- Users interacts with mini-SPA (Vue.js)
+- The mini-SPA calls JSON API to load initial data and future requests
+- Users interacts with mini-SPA (Vue.js) until they leave the section
 
 ## Need
 
-It would be nice to only focus on the front-end for most screens. You could
+It would be nice to focus solely on the front-end for most screens. You could
 sit down and code up the Ajax calls with a backend API that is smart enough
 to get you the data you are requesting with validation and authorization
 keeping you safe.
@@ -38,6 +41,8 @@ with SQL? We could have a common interface to describe the data we want to
 retrieve or mutate.
 
 ## Approach
+
+This project is a starting point for that solution.
 
 - Define a JSON data format which converts nicely to SQL
 - Create a small JS lib to interact with
