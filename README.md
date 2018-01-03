@@ -21,15 +21,17 @@ you get it. Available API solutions are cumbersome, largely getting in the way.
 I believe this is because most people are designing API technology with external
 callers in mind. If however, you are consuming your own backend (as most of us
 are) then the accepted approach is unnecessarily slow requiring you to write
-serializers and accepting new parameters. SQL already does this in a nice way.
+serializers which cannot adapt to new requirements. SQL already does this
+in a nice way. If you could send a SQL query via POST, you can easily get
+different results in the a nice format.
 
-Here's an example of mini-SPA:
+Overview of a mini-SPA:
 - Browser makes request to load "mini-SPA" view
 - Vue.js and HTML template coded in a standard Rails view
 - The mini-SPA calls JSON API to load initial data and future requests
 - Users interacts with mini-SPA (Vue.js) until they leave the section
 
-## Need
+## Solution
 
 It would be nice to focus solely on the front-end for most screens. You could
 sit down and code up the Ajax calls with a backend API that is smart enough
