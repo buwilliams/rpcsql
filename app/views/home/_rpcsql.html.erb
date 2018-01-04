@@ -1,0 +1,71 @@
+<script type="text/javascript">
+/**
+Example:
+
+  RpcSql('<%= api_path %>')
+    .select('posts.id').select('email').select('title').select('body')
+    .from('users')
+    .join('join posts on users.id = posts.user_id')
+    .orderBy('posts.id desc')
+    .post(function(data) {
+      $('#results').html('<pre>' + str + '</pre>')
+    })
+**/
+
+  function RpcSql(url) {
+    var that = this;
+
+    var payload = {
+      select: [],
+      from: "",
+      joins: [],
+      where: [],
+      groupBy: [],
+      orderBy: []
+    }
+
+    var select = function(col) {
+      payload.select.push(col)
+      return that
+    }
+
+    var from = function(table) {
+      payload.from = table
+      return that
+    }
+
+    var join = function(eq) {
+      payload.joins.push(eq)
+      return that
+    }
+
+    var where = function(eq) {
+      payload.where.push(eq)
+      return that
+    }
+
+    var groupBy = function(eq) {
+      payload.group_by.push(eq)
+      return that
+    }
+
+    var orderBy = function(eq) {
+      payload.order.push(eq)
+      return that
+    }
+
+    var overwrite = function(newPayload) {
+      payload = newPayload
+      return that
+    }
+
+    var post = function(successFn) {
+      $.post(url, payload, function(data) {
+        var results = JSON.stringify(data, "", 2)
+        successFn(results)
+      }, 'json')
+    }
+
+    return this;
+  }
+</script>

@@ -60,12 +60,12 @@ class RpcSql
   end
 
   def sql_group_by
-    return if @json['group_by'].size === 0
-    @sql << "group by " + @json['group_by'].join("\n")
+    return if @json['groupBy'].size === 0
+    @sql << "group by " + @json['groupBy'].join("\n")
   end
 
   def sql_order
-    return if @json['order'].size === 0
-    @sql << "order by " + @json['order'].join("\n")
+    return if @json['orderBy'].size === 0
+    @sql << "order by " + @json['orderBy'].join("\n")
   end
 end
