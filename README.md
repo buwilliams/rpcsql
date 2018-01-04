@@ -33,10 +33,10 @@ The questions are:
 ## Getting Started
 
 - Clone repo
-- bundle
-- bundle exec rake db:create db:migrate
-- bundle exec rails s
-- Click the 'Submit'
+- `bundle`
+- `bundle exec rake db:create db:migrate`
+- `bundle exec rails s`
+- Browse to `localhost:3000`
 
 ## `mini-SPA` - hybrid of Rails MVC and SPA apps (for context)
 
