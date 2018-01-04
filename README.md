@@ -17,7 +17,7 @@ RpcSql('/api')
   .post(callbackFn)
 ```
 
-The core app is here:
+The interesting code is here:
 - [Examples](https://github.com/buwilliams/rpcsql/blob/master/app/views/home/index.html.erb)
 - [RpcSql JS library](https://github.com/buwilliams/rpcsql/blob/master/app/views/home/_rpcsql.html.erb)
 - [RpcSql Ruby library](https://github.com/buwilliams/rpcsql/blob/master/app/services/rpc_sql.rb)
