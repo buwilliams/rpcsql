@@ -1,6 +1,6 @@
 # RpcSql
 
-Experimenting with remote procedure calls for SQL with JavaScript in Rails.
+Experimenting with remote procedure calls for SQL with JavaScript, Rails, and SQL.
 
 ## The vision
 
