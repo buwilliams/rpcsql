@@ -1,6 +1,12 @@
 # RpcSql
 
-Experimenting with remote procedure calls for SQL in Rails.
+Experimenting with remote procedure calls for SQL with JavaScript in Rails.
+
+The questions are:
+
+- Can the JS interface be enjoyable?
+- Can the backend avoid SQL injection properly?
+- How hard is this effort? Or is simply limiting the feature enough?
 
 ## Getting Started
 
@@ -31,6 +37,24 @@ Overview of a mini-SPA:
 - The mini-SPA calls JSON API to load initial data and future requests
 - Users interacts with mini-SPA (Vue.js) until they leave the section
 
+## The vision
+
+I'd like to query the backend without creating unnecessary APIs through a easy-to-use JS interface. Here's an example:
+
+```JavaScript
+RpcSql('/api')
+  .select('posts.id', 'email as author', 'title', 'body')
+  .from('users')
+  .join('posts', 'users.id', '=', 'posts.user_id')
+  .orderBy('posts.id', 'desc')
+  .post(callbackFn)
+```
+
+The core app is here:
+- [Examples](https://github.com/buwilliams/rpcsql/blob/master/app/views/home/index.html.erb)
+- [RpcSql JS library](https://github.com/buwilliams/rpcsql/blob/master/app/views/home/_rpcsql.html.erb)
+- [RpcSql Ruby library](https://github.com/buwilliams/rpcsql/blob/master/app/services/rpc_sql.rb)
+
 ## Solution
 
 It would be nice to focus solely on the front-end for most screens. You could
@@ -46,8 +70,13 @@ retrieve or mutate.
 
 This project is a starting point for that solution.
 
+- The goal is support a limited amount of SQL, just enough for querying.
 - Define a JSON data format which converts nicely to SQL
 - Create a small JS lib to interact with
 - Build a simple API for the backend that can accept these requests
-- Build a service which supports building SQL, handling errors, validating
-  the request, and authorization.
+- Build a service which supports building SQL, handling errors, and removes possible SQL injection.
+- If all that goes well then add authorization.
+
+## Security Concerns
+
+The most obvious concern with this approach is security, namely, SQL injection. I'm hoping to solve this in a two fold approach. 1. Limit SQL with a SQL-like data-structure. 2. White-list and validate data coming from client. I'm not a security expert, advice is welcome.
