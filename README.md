@@ -38,7 +38,7 @@ The questions are:
 - bundle exec rails s
 - Click the 'Submit'
 
-## Context
+## Context: `mini-SPA` (hybrid of Rails MVC and SPA apps)
 
 Much of our work is in building screens which support our business. In our shop
 we use a `mini-SPA` pattern. Instead of a SPA for the entire product we build
@@ -53,11 +53,12 @@ serializers which cannot adapt to new requirements. SQL already does this
 in a nice way. If you could send a SQL query via POST, you can easily get
 different results in the a nice format.
 
-Overview of a mini-SPA:
-- Browser makes request to load "mini-SPA" view
-- Vue.js and HTML template coded in a standard Rails view
-- The mini-SPA calls JSON API to load initial data and future requests
-- Users interacts with mini-SPA (Vue.js) until they leave the section
+Overview of a `mini-SPA` app:
+- Rails handles routing
+- Browser makes request to load "mini-SPA" view in a standard MVC pattern
+- The view contains Vue.js and it's template
+- The mini-SPA requests data from backend and future requests for data without page refresh
+- Users interacts with mini-SPA until they click a regular URL and which loads another mini-SPA app
 
 ## Solution
 
