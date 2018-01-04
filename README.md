@@ -84,4 +84,7 @@ This project is a starting point for that solution.
 
 ## Security Concerns
 
-The most obvious concern with this approach is security, namely, SQL injection. I'm hoping to solve this in a two fold approach. 1. Limit SQL with a SQL-like data-structure. 2. White-list and validate data coming from client. I'm not a security expert, advice is welcome.
+Known security problems (w/ possible solutions):
+
+#. SQL Injection, this is the most obvious concern. It's possible to fix by whitelisting allowed characters or creating a read-only db user (the second not being ideal). Also, data structure helps here since small amount of user-input are required and should be validated.
+#. Exposing database schema - use aliases or leave as is
