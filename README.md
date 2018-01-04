@@ -86,5 +86,5 @@ This project is a starting point for that solution.
 
 Known security problems (w/ possible solutions):
 
-#. SQL Injection, this is the most obvious concern. It's possible to fix by whitelisting allowed characters or creating a read-only db user (the second not being ideal). Also, data structure helps here since small amount of user-input are required and should be validated.
-#. Exposing database schema - use aliases or leave as is
+1. SQL Injection, this is the most obvious concern. It's possible to fix by whitelisting allowed characters or creating a read-only db user (the second not being ideal). Also, data structure helps here since small amount of user-input are required and should be validated.
+1. Exposing database schema - use aliases or leave as is
