@@ -2,6 +2,26 @@
 
 Experimenting with remote procedure calls for SQL with JavaScript in Rails.
 
+## The vision
+
+I'd like to query the backend without creating unnecessary APIs through a easy-to-use JS interface. Here's an example:
+
+```JavaScript
+RpcSql('/api')
+  .select('posts.id', 'email as author', 'title', 'body')
+  .from('users')
+  .join('posts', 'users.id', '=', 'posts.user_id')
+  .orderBy('posts.id', 'desc')
+  .post(callbackFn)
+```
+
+The core app is here:
+- [Examples](https://github.com/buwilliams/rpcsql/blob/master/app/views/home/index.html.erb)
+- [RpcSql JS library](https://github.com/buwilliams/rpcsql/blob/master/app/views/home/_rpcsql.html.erb)
+- [RpcSql Ruby library](https://github.com/buwilliams/rpcsql/blob/master/app/services/rpc_sql.rb)
+
+## The experiment
+
 The questions are:
 
 - Can the JS interface be enjoyable?
@@ -36,24 +56,6 @@ Overview of a mini-SPA:
 - Vue.js and HTML template coded in a standard Rails view
 - The mini-SPA calls JSON API to load initial data and future requests
 - Users interacts with mini-SPA (Vue.js) until they leave the section
-
-## The vision
-
-I'd like to query the backend without creating unnecessary APIs through a easy-to-use JS interface. Here's an example:
-
-```JavaScript
-RpcSql('/api')
-  .select('posts.id', 'email as author', 'title', 'body')
-  .from('users')
-  .join('posts', 'users.id', '=', 'posts.user_id')
-  .orderBy('posts.id', 'desc')
-  .post(callbackFn)
-```
-
-The core app is here:
-- [Examples](https://github.com/buwilliams/rpcsql/blob/master/app/views/home/index.html.erb)
-- [RpcSql JS library](https://github.com/buwilliams/rpcsql/blob/master/app/views/home/_rpcsql.html.erb)
-- [RpcSql Ruby library](https://github.com/buwilliams/rpcsql/blob/master/app/services/rpc_sql.rb)
 
 ## Solution
 
