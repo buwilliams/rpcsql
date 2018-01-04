@@ -1,3 +1,5 @@
+<%= render '/home/rpcsql' %>
+
 <style media="screen">
   body, input, textarea, button {
     font-size: 12pt;
@@ -5,28 +7,32 @@
 </style>
 
 <div>
-  <form id="form" action="/api" method="post">
-    <h1>RPC JSON</h1>
-    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-    <div><button type="submit" name="button">Submit</button></div>
-  </form>
-</div>
+  <h1>RPC JSON</h1>
+  <h2>JavaScript</h2>
+<pre>
+RpcSql('<%= api_path %>')
+  .select('posts.id', 'email', 'title', 'body')
+  .from('users')
+  .join('posts', 'users.id', '=', 'posts.user_id')
+  .orderBy('posts.id', 'desc')
+  .post(callbackFn)
+</pre>
+<div>
 <div>
   <hr>
-  <h2>Results</h2>
+  <h2>Response</h2>
   <div id="results"></div>
 </div>
 
 <script type="text/javascript">
-  $('form').submit(function(e) {
-    e.preventDefault()
-
+  $(document).ready(function(e) {
     RpcSql('<%= api_path %>')
-      .select('posts.id').select('email').select('title').select('body')
+      .select('posts.id', 'email', 'title', 'body')
       .from('users')
-      .join('join posts on users.id = posts.user_id')
-      .orderBy('posts.id desc')
+      .join('posts', 'users.id', '=', 'posts.user_id')
+      .orderBy('posts.id', 'desc')
       .post(function(data) {
+        var str = JSON.stringify(data, "", 2)
         $('#results').html('<pre>' + str + '</pre>')
       })
   })

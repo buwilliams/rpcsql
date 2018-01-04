@@ -1,20 +1,16 @@
 <script type="text/javascript">
 /**
-Example:
-
+  Example:
   RpcSql('<%= api_path %>')
-    .select('posts.id').select('email').select('title').select('body')
+    .select('posts.id', 'email', 'title', 'body')
     .from('users')
-    .join('join posts on users.id = posts.user_id')
+    .join('posts', 'users.id', '=', 'posts.user_id')
     .orderBy('posts.id desc')
-    .post(function(data) {
-      $('#results').html('<pre>' + str + '</pre>')
-    })
+    .post(callbackFn)
 **/
 
   function RpcSql(url) {
-    var that = this;
-
+    var fn = {}
     var payload = {
       select: [],
       from: "",
@@ -24,48 +20,49 @@ Example:
       orderBy: []
     }
 
-    var select = function(col) {
-      payload.select.push(col)
-      return that
+    fn.select = function(cols) {
+      payload.select = payload.select.concat(Array.from(arguments))
+      return fn
     }
 
-    var from = function(table) {
+    fn.from = function(table) {
       payload.from = table
-      return that
+      return fn
     }
 
-    var join = function(eq) {
-      payload.joins.push(eq)
-      return that
+    fn.join = function(table, col1, operator, col2) {
+      var str = "join " + table + " on " + col1 + " " + operator + " " + col2
+      payload.joins.push(str)
+      return fn
     }
 
-    var where = function(eq) {
+    fn.where = function(eq) {
       payload.where.push(eq)
-      return that
+      return fn
     }
 
-    var groupBy = function(eq) {
-      payload.group_by.push(eq)
-      return that
+    fn.groupBy = function(col) {
+      payload.groupBy.push(col)
+      return fn
     }
 
-    var orderBy = function(eq) {
-      payload.order.push(eq)
-      return that
+    fn.orderBy = function(col, direction) {
+      payload.orderBy.push(col + " " + direction)
+      return fn
     }
 
-    var overwrite = function(newPayload) {
+    fn.overwrite = function(newPayload) {
       payload = newPayload
-      return that
+      return fn
     }
 
-    var post = function(successFn) {
-      $.post(url, payload, function(data) {
-        var results = JSON.stringify(data, "", 2)
-        successFn(results)
+    fn.post = function(successFn) {
+      var postData = JSON.stringify(payload)
+      $.post(url, postData, function(data) {
+        successFn(data)
       }, 'json')
     }
 
-    return this;
+    return fn;
   }
 </script>
