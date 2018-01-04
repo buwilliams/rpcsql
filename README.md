@@ -4,7 +4,9 @@ Experimenting with remote procedure calls for SQL with JavaScript in Rails.
 
 ## The vision
 
-I'd like to query the backend without creating unnecessary APIs through a easy-to-use JS interface. Here's an example:
+Make API call without creating the API using JS lib and a graphGL like SQL interface.
+
+Here's an example of what the JavaScript so far:
 
 ```JavaScript
 RpcSql('/api')
