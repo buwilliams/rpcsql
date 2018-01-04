@@ -38,7 +38,7 @@ The questions are:
 - bundle exec rails s
 - Click the 'Submit'
 
-## Context: `mini-SPA` (hybrid of Rails MVC and SPA apps)
+## `mini-SPA` - hybrid of Rails MVC and SPA apps (for context)
 
 Much of our work is in building screens which support our business. In our shop
 we use a `mini-SPA` pattern. Instead of a SPA for the entire product we build
