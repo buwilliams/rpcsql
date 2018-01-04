@@ -10,7 +10,9 @@ class RpcSql
     rpc = RpcSql.new(json)
     rpc.sql_select
     rpc.sql_from
-    rpc.sql_joins
+    rpc.sql_join
+    rpc.sql_left_outer_join
+    rpc.sql_full_outer_join
     rpc.sql_where
     rpc.sql_group_by
     rpc.sql_order
@@ -49,23 +51,59 @@ class RpcSql
     @sql << "from #{@json['from']}"
   end
 
-  def sql_joins
-    return if @json['joins'].size === 0
-    @sql << @json['joins'].join("\n")
+  def sql_join
+    #ActiveRecord::Sanitization.sanitize_sql_array([
+    #  "and ? on ? ? ?", params[1], params[2], params[3]])
+    return if @json['join'].size == 0
+    @json['join'].each do |params|
+      if(params[0] == 'and')
+        @sql << "and #{params[1]} #{params[2]} #{params[3]}"
+      else
+        @sql << "join #{params[0]} on #{params[1]} #{params[2]} #{params[3]}"
+      end
+    end
+  end
+
+  def sql_left_outer_join
+    return if @json['leftOuterJoin'].size == 0
+    @json['leftOuterJoin'].each do |params|
+      if(params[0] == 'and')
+        @sql << "and #{params[1]} #{params[2]} #{params[3]}"
+      else
+        @sql << "left outer join #{params[0]} on #{params[1]} #{params[2]} #{params[3]}"
+      end
+    end
+  end
+
+  def sql_full_outer_join
+    return if @json['fullOuterJoin'].size == 0
+    @json['fullOuterJoin'].each do |params|
+      if(params[0] == 'and')
+        @sql << "and #{params[1]} #{params[2]} #{params[3]}"
+      else
+        @sql << "left outer join #{params[0]} on #{params[1]} #{params[2]} #{params[3]}"
+      end
+    end
   end
 
   def sql_where
-    return if @json['where'].size === 0
-    @sql << "where " + @json['where'].join("\n")
+    return if @json['where'].size == 0
+    @json['where'].each do |params|
+      if(params[0] == 'and')
+        @sql << "and #{params[1]} #{params[2]} #{params[3]}"
+      else
+        @sql << "where #{params[0]} #{params[1]} #{params[2]}"
+      end
+    end
   end
 
   def sql_group_by
-    return if @json['groupBy'].size === 0
-    @sql << "group by " + @json['groupBy'].join("\n")
+    return if @json['groupBy'] == ""
+    @sql << "group by #{@json['groupBy']}"
   end
 
   def sql_order
-    return if @json['orderBy'].size === 0
-    @sql << "order by " + @json['orderBy'].join("\n")
+    return if @json['orderBy'].size == 0
+    @sql << "order by #{@json['orderBy'][0]} #{@json['orderBy'][1]}"
   end
 end

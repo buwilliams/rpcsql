@@ -11,52 +11,97 @@
 
   function RpcSql(url) {
     var fn = {}
+    var lastCall = ''
     var payload = {
       select: [],
       from: "",
-      joins: [],
+      join: [],
+      leftOuterJoin: [],
+      fullOuterJoin: [],
       where: [],
-      groupBy: [],
+      groupBy: "",
       orderBy: []
     }
 
     fn.select = function(cols) {
-      payload.select = payload.select.concat(Array.from(arguments))
+      lastCall = 'select'
+      var ary = Array.from(arguments)
+      payload.select = payload.select.concat(ary)
       return fn
     }
 
     fn.from = function(table) {
+      lastCall = 'from'
       payload.from = table
       return fn
     }
 
     fn.join = function(table, col1, operator, col2) {
-      var str = "join " + table + " on " + col1 + " " + operator + " " + col2
-      payload.joins.push(str)
+      lastCall = 'join'
+      payload.join.push([table, col1, operator, col2])
       return fn
     }
 
-    fn.where = function(eq) {
-      payload.where.push(eq)
+    fn.leftOuterJoin = function(table, col1, operator, col2) {
+      lastCall = 'leftOuterJoin'
+      payload.leftOuterJoin.push([table, col1, operator, col2])
+      return fn
+    }
+
+    fn.fullOuterJoin = function(table, col1, operator, col2) {
+      lastCall = 'full outer join'
+      payload.fullOuterJoin.push([table, col1, operator, col2])
+      return fn
+    }
+
+    fn.and = function(col1, operator, col2) {
+      // `and` is used for join(), leftOuterJoin(), fullOuterJoin(), where()
+      // therefore we track `lastCall` to determine
+      // where to place it in the data structure
+
+      var ary = ['and', col1, operator, col2]
+
+      if(lastCall === 'join') {
+        payload.join.push(ary)
+      } else if(lastCall === 'leftOuterJoin') {
+        payload.leftOuterJoin.push(ary)
+      } else if(lastCall === 'fullOuterJoin') {
+        payload.fullOuterJoin.push(ary)
+      } else if(lastCall === 'where') {
+        payload.where.push(ary)
+      }
+
+      return fn
+    }
+
+    fn.where = function(col1, operator, col2) {
+      lastCall = 'where'
+      var ary = [col1, operator, col2]
+      payload.where.push(ary)
       return fn
     }
 
     fn.groupBy = function(col) {
-      payload.groupBy.push(col)
+      lastCall = 'groupBy'
+      payload.groupBy = col
       return fn
     }
 
-    fn.orderBy = function(col, direction) {
-      payload.orderBy.push(col + " " + direction)
+    fn.orderBy = function(cols, direction) {
+      lastCall = 'orderBy'
+      var ary = [cols, direction]
+      payload.orderBy = ary
       return fn
     }
 
     fn.overwrite = function(newPayload) {
+      lastCall = ''
       payload = newPayload
       return fn
     }
 
     fn.post = function(successFn) {
+      console.log('posting', payload)
       var postData = JSON.stringify(payload)
       $.post(url, postData, function(data) {
         successFn(data)

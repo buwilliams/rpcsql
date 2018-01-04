@@ -11,7 +11,7 @@
   <h2>JavaScript</h2>
 <pre>
 RpcSql('<%= api_path %>')
-  .select('posts.id', 'email', 'title', 'body')
+  .select('posts.id', 'email as author', 'title', 'body')
   .from('users')
   .join('posts', 'users.id', '=', 'posts.user_id')
   .orderBy('posts.id', 'desc')
@@ -27,7 +27,7 @@ RpcSql('<%= api_path %>')
 <script type="text/javascript">
   $(document).ready(function(e) {
     RpcSql('<%= api_path %>')
-      .select('posts.id', 'email', 'title', 'body')
+      .select('posts.id', 'email as author', 'title', 'body')
       .from('users')
       .join('posts', 'users.id', '=', 'posts.user_id')
       .orderBy('posts.id', 'desc')
@@ -35,5 +35,29 @@ RpcSql('<%= api_path %>')
         var str = JSON.stringify(data, "", 2)
         $('#results').html('<pre>' + str + '</pre>')
       })
+
+    /*
+    RpcSql('<%= api_path %>')
+      .select('users.email', 'count(*) as numOfPosts')
+      .from('users')
+      .join('posts', 'users.id', '=', 'posts.user_id')
+      .groupBy('users.id')
+      .post(function(data) {
+        var str = JSON.stringify(data, "", 2)
+        $('#results').html('<pre>' + str + '</pre>')
+      })
+
+    RpcSql('<%= api_path %>')
+      .select('comments.body', 'users.email as author')
+      .from('comments')
+      .join('posts', 'comments.post_id', '=', 'posts.id')
+      .join('users', 'posts.user_id', '=', 'users.id')
+      .where('comments.user_id', '=', '2')
+      .and('posts.id', '=', '2')
+      .post(function(data) {
+        var str = JSON.stringify(data, "", 2)
+        $('#results').html('<pre>' + str + '</pre>')
+      })
+    */
   })
 </script>
